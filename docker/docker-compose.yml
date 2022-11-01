@@ -7,6 +7,8 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: musicians
+    ports:
+      - 5432:5432
   web:
     image: musicians:latest
     ports:
