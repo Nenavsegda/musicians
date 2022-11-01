@@ -2,14 +2,21 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from main.models import Album, Artist, Song
-from main.serializers import ArtistSerializer, \
-    DetailAlbumSerializer, ListAlbumSerializer
+from main.serializers import DetailAlbumSerializer, DetailArtistSerializer, ListAlbumSerializer, \
+    ListArtistSerializer
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
 
+    serializer_class = ListArtistSerializer
     queryset = Artist.objects.all()
-    serializer_class = ArtistSerializer
+    detail_serializer_class = DetailArtistSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return self.detail_serializer_class
+
+        return super(ArtistViewSet, self).get_serializer_class()
 
 
 class AlbumViewSet(viewsets.ModelViewSet):
