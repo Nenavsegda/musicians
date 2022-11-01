@@ -1,8 +1,9 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from main.models import Album, Artist, Song
-from main.serializers import DetailAlbumSerializer, DetailArtistSerializer, ListAlbumSerializer, \
+from main.models import Album, AlbumSong, Artist, Song
+from main.serializers import AlbumSongSerializer, DetailAlbumSerializer, \
+    DetailArtistSerializer, ListAlbumSerializer, \
     ListArtistSerializer
 
 
@@ -33,3 +34,7 @@ class AlbumViewSet(viewsets.ModelViewSet):
         artist_instance, _ = Artist.objects.get_or_create(name=self.request.data['artist'])
         serializer.save(artist=artist_instance)
 
+
+class AlbumSongViewSet(viewsets.ModelViewSet):
+    queryset = AlbumSong.objects.all()
+    serializer_class = AlbumSongSerializer
