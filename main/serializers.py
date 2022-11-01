@@ -63,7 +63,9 @@ class AlbumSongSerializer(serializers.ModelSerializer):
         if not album_instance:
             raise serializers.ValidationError("Такого альбома не существует")
         song_instance, _ = Song.objects.get_or_create(title=song_title)
-        obj = AlbumSong.objects.create(**validated_data, album=album_instance, song=song_instance)
+        obj = AlbumSong.objects.create(
+            **validated_data, album=album_instance, song=song_instance
+        )
         return obj
 
     class Meta:
