@@ -1,7 +1,9 @@
 from rest_framework import viewsets
+from rest_framework.response import Response
 
-from main.models import Album, Artist
-from main.serializers import AlbumSerializer, ArtistSerializer
+from main.models import Album, Artist, Song
+from main.serializers import ArtistSerializer, \
+    DetailAlbumSerializer, ListAlbumSerializer
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
@@ -12,5 +14,12 @@ class ArtistViewSet(viewsets.ModelViewSet):
 
 class AlbumViewSet(viewsets.ModelViewSet):
 
+    serializer_class = ListAlbumSerializer
     queryset = Album.objects.all()
-    serializer_class = AlbumSerializer
+    detail_serializer_class = DetailAlbumSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return self.detail_serializer_class
+
+        return super(AlbumViewSet, self).get_serializer_class()
