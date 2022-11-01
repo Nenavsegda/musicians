@@ -20,10 +20,15 @@ def current_year():
 
 class Album(models.Model):
     title = models.CharField(max_length=250, verbose_name='Название альбома')
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='albums', verbose_name='Исполнитель')
+    artist = models.ForeignKey(
+        Artist,
+        on_delete=models.CASCADE,
+        related_name='albums',
+        verbose_name='Исполнитель',
+    )
     release_year = models.PositiveIntegerField(
         validators=[MinValueValidator(1920), MaxValueValidator(current_year())],
-        verbose_name='Год выпуска'
+        verbose_name='Год выпуска',
     )
 
     def __str__(self):

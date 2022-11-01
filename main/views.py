@@ -1,10 +1,9 @@
 from rest_framework import viewsets
-from rest_framework.response import Response
 
-from main.models import Album, AlbumSong, Artist, Song
-from main.serializers import AlbumSongSerializer, DetailAlbumSerializer, \
-    DetailArtistSerializer, ListAlbumSerializer, \
-    ListArtistSerializer
+from main.models import Album, AlbumSong, Artist
+from main.serializers import (AlbumSongSerializer, DetailAlbumSerializer,
+                              DetailArtistSerializer, ListAlbumSerializer,
+                              ListArtistSerializer)
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
@@ -31,7 +30,9 @@ class AlbumViewSet(viewsets.ModelViewSet):
         return super(AlbumViewSet, self).get_serializer_class()
 
     def perform_update(self, serializer):
-        artist_instance, _ = Artist.objects.get_or_create(name=self.request.data['artist'])
+        artist_instance, _ = Artist.objects.get_or_create(
+            name=self.request.data['artist']
+        )
         serializer.save(artist=artist_instance)
 
 
