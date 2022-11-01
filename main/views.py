@@ -20,13 +20,16 @@ class ArtistViewSet(viewsets.ModelViewSet):
 
 
 class AlbumViewSet(viewsets.ModelViewSet):
-
-    serializer_class = ListAlbumSerializer
     queryset = Album.objects.all()
+    serializer_class = ListAlbumSerializer
     detail_serializer_class = DetailAlbumSerializer
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return self.detail_serializer_class
-
         return super(AlbumViewSet, self).get_serializer_class()
+
+    def perform_update(self, serializer):
+        artist_instance, _ = Artist.objects.get_or_create(name=self.request.data['artist'])
+        serializer.save(artist=artist_instance)
+
