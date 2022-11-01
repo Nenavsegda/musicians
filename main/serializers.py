@@ -3,10 +3,21 @@ from rest_framework import serializers
 from main.models import Album, AlbumSong, Artist
 
 
-class ArtistSerializer(serializers.ModelSerializer):
+class ListArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
         fields = ['name']
+
+
+class DetailArtistSerializer(serializers.ModelSerializer):
+    albums = serializers.SerializerMethodField()
+
+    def get_albums(self, obj):
+        return [f'{album}' for album in obj.albums.all()]
+
+    class Meta:
+        model = Artist
+        fields = ['name', 'albums']
 
 
 class ListAlbumSerializer(serializers.ModelSerializer):
