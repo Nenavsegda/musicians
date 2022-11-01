@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from main.models import Album, AlbumSong, Artist
+from main.models import Album, AlbumSong, Artist, Song
 
 
 class ListArtistSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class DetailArtistSerializer(serializers.ModelSerializer):
         fields = ['name', 'albums']
 
 
-class ListAlbumSerializer(serializers.ModelSerializer):
+class ListAlbumSerializer(serializers.HyperlinkedModelSerializer):
     artist = serializers.CharField(max_length=50)
 
     def create(self, validated_data):
@@ -41,7 +41,6 @@ class DetailAlbumSerializer(serializers.ModelSerializer):
     def get_songs(self, obj):
         song_order = AlbumSong.objects.filter(album=obj)
         return [f'{song}' for song in song_order]
-
 
     class Meta:
         model = Album
